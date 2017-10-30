@@ -5,15 +5,16 @@ from colorama import Fore, Style
 from mondrian._version import __version__
 from mondrian.constants import CLEAR_EOL, iswindows
 
-_root_logger = None
+_setup = False
 
-
-def getLogger():
-    global _root_logger
-    if _root_logger is None:
+def getLogger(name=None):
+    global _setup
+    if not _setup:
         import sys
         from mondrian.filters import Filter
         from mondrian.formatters import Formatter
+
+        _setup = True
 
         def get_format():
             yield '{b}[%(fg)s%(levelname)s{b}][{w}'
@@ -38,6 +39,5 @@ def getLogger():
         handler = StreamHandler(sys.stderr)
         handler.setFormatter(Formatter(format))
         handler.addFilter(Filter())
-        _root_logger = _getLogger()
-        _root_logger.addHandler(handler)
-    return _root_logger
+        _getLogger().addHandler(handler)
+    return _getLogger(name)
