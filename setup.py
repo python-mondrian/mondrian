@@ -51,6 +51,7 @@ setup(
     classifiers=classifiers,
     packages=find_packages(exclude=['ez_setup', 'example', 'test']),
     include_package_data=True,
+    install_requires=['colorama (>= 0.3, < 0.4)'],
     extras_require={
         'dev': [
             'coverage (>= 4.4, < 5.0)', 'pytest (>= 3.1, < 4.0)', 'pytest-cov (>= 2.5, < 3.0)',
