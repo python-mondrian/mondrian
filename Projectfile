@@ -9,7 +9,6 @@ python = require('python')
 sphinx = require('sphinx')
 yapf = require('yapf')
 
-
 python.setup(
     name='mondrian',
     description='Logging with pretty coloured squares all over the place.',
@@ -20,8 +19,6 @@ python.setup(
     author_email='',
 )
 
-python.add_requirements(
-    'colorama >=0.3,<0.4',
-)
+python.add_requirements('colorama >=0.3,<0.4', )
 
 # vim: ft=python:
