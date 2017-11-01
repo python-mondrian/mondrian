@@ -1,13 +1,25 @@
-from logging import addLevelName, DEBUG, INFO, WARNING, ERROR, CRITICAL, StreamHandler, getLogger as _getLogger
+import logging
+from traceback import format_exception
 
 from colorama import Fore, Style
+import sys
+
+from textwrap import indent
 
 from mondrian._version import __version__
 from mondrian.constants import CLEAR_EOL, iswindows
 
-_setup = False
+__all__ = [
+    '__version__',
+    'setup',
+    'getLogger',
+]
 
-def getLogger(name=None):
+_setup = False
+_setupExceptHook = False
+
+
+def setup():
     global _setup
     if not _setup:
         import sys
@@ -31,13 +43,55 @@ def getLogger(name=None):
         }
         format = (''.join(get_format())).format(**colors)
 
-        addLevelName(DEBUG, 'DEBG')
-        addLevelName(INFO, 'INFO')
-        addLevelName(WARNING, 'WARN')
-        addLevelName(ERROR, 'ERR ')
-        addLevelName(CRITICAL, 'CRIT')
-        handler = StreamHandler(sys.stderr)
+        logging.addLevelName(logging.DEBUG, 'DEBG')
+        logging.addLevelName(logging.INFO, 'INFO')
+        logging.addLevelName(logging.WARNING, 'WARN')
+        logging.addLevelName(logging.ERROR, 'ERR ')
+        logging.addLevelName(logging.CRITICAL, 'CRIT')
+        handler = logging.StreamHandler(sys.stderr)
         handler.setFormatter(Formatter(format))
         handler.addFilter(Filter())
-        _getLogger().addHandler(handler)
-    return _getLogger(name)
+        logging.getLogger().addHandler(handler)
+
+        logging.captureWarnings(True)
+
+
+def _get_error_message(exc):
+    if hasattr(exc, '__str__'):
+        message = str(exc)
+        return message[0].upper() + message[1:]
+    return '\n'.join(exc.args),
+
+
+def excepthook(exctype, exc, traceback, level=logging.CRITICAL):
+    """
+    Error handler. Whatever happens in a plugin or component, if it looks like an exception, taste like an exception
+    or somehow make me think it is an exception, I'll handle it.
+
+    :param exc: the culprit
+    :param trace: Hercule Poirot's logbook.
+    :return: to hell
+    """
+    logger = logging.getLogger()
+    formatted_exception = format_exception(exctype, exc, traceback)
+
+    EOL = Style.RESET_ALL + CLEAR_EOL + '\n'
+    prefix = '{} \u2502 {}'.format(Fore.RED, Style.RESET_ALL)
+
+    logger.log(level, EOL.join([
+        Fore.RED+formatted_exception[0].strip(),
+        *(indent(frame.strip(), prefix) for frame in formatted_exception[1:-1]),
+        prefix + Fore.RED + exctype.__name__ + ': '+Fore.WHITE+str(exc)
+    ]))
+
+
+def setupExceptHook():
+    global _setupExceptHook
+    if not _setupExceptHook:
+        import sys
+        sys.excepthook = excepthook
+
+
+def getLogger(name=None):
+    setup()
+    return logging.getLogger(name)
