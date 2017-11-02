@@ -1,12 +1,14 @@
 import logging
 import mondrian
 
+
 def do_log(logger):
     logger.critical('This is a critical error.')
     logger.error('This is an error.')
     logger.warning('This is a warning.')
     logger.info('This is an info.')
     logger.debug('This is a debug information.')
+
 
 if __name__ == '__main__':
     root_logger = mondrian.getLogger()
