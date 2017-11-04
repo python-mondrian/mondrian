@@ -11,17 +11,17 @@ def do_log(logger):
 
 
 if __name__ == '__main__':
-    root_logger = mondrian.getLogger()
+    mondrian.setup()
 
-    print('=== Logging with root logger, level=INFO ===')
+    print('=== Logging using root logger, level=INFO ===')
+    root_logger = logging.getLogger()
     root_logger.setLevel(logging.INFO)
     do_log(root_logger)
 
-    logger = mondrian.getLogger('foo.bar')
-
-    print('=== Logging with foo.bar logger, level=DEBUG ===')
+    print('=== Logging using foo.bar logger, level=DEBUG ===')
+    logger = logging.getLogger('foo.bar')
     logger.setLevel(logging.DEBUG)
     do_log(logger)
 
-    print('=== Logging with root logger, level unchanged ===')
+    print('=== Logging again using root logger, level unchanged ===')
     do_log(root_logger)
