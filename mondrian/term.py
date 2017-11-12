@@ -1,19 +1,21 @@
 import sys
 
-from colorama import Fore, Back, Style
-
 iswindows = (sys.platform == 'win32')
 istty = sys.stdout.isatty()
 
 
 def _create_color_wrappers(symbol):
-    fg, bg = getattr(Fore, symbol), getattr(Back, symbol)
+    if istty:
+        from colorama import Fore, Back
+        fg, bg, rfg, rbg = getattr(Fore, symbol), getattr(Back, symbol), Fore.RESET, Back.RESET
+    else:
+        fg, bg, rfg, rbg = '', '', '', ''
 
     def fg_wrapper(*args):
-        return ''.join((fg, *args, Fore.RESET))
+        return ''.join((fg, *args, rfg))
 
     def bg_wrapper(*args):
-        return ''.join((bg, *args, Back.RESET))
+        return ''.join((bg, *args, rbg))
 
     return fg_wrapper, bg_wrapper
 
@@ -38,7 +40,10 @@ lightwhite, lightwhite_bg = _create_color_wrappers('LIGHTWHITE_EX')
 
 
 def bold(*args):
-    return ''.join((Style.BRIGHT, *args, Style.NORMAL))
+    if istty:
+        from colorama import Style
+        return ''.join((Style.BRIGHT, *args, Style.NORMAL))
+    return ''.join(args)
 
 
 CLEAR_EOL = '\033[0K'
