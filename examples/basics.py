@@ -11,17 +11,19 @@ def do_log(logger):
 
 
 if __name__ == '__main__':
-    mondrian.setup()
+    mondrian.setup(excepthook=True)
 
     print('=== Logging using root logger, level=INFO ===')
     root_logger = logging.getLogger()
     root_logger.setLevel(logging.INFO)
     do_log(root_logger)
+    print()
 
     print('=== Logging using foo.bar logger, level=DEBUG ===')
     logger = logging.getLogger('foo.bar')
     logger.setLevel(logging.DEBUG)
     do_log(logger)
+    print()
 
-    print('=== Logging again using root logger, level unchanged ===')
-    do_log(root_logger)
+    print('=== Logging an exception ===')
+    raise RuntimeError('Woops, something bad happened...')
