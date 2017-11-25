@@ -1,4 +1,5 @@
 import logging
+import re
 import textwrap
 from traceback import format_exception
 
@@ -29,10 +30,19 @@ class Formatter(logging.Formatter):
     def formatException(self, excinfo):
         formatted_exception = format_exception(*excinfo)
 
-        return EOL.join(
-            [
-                *(textwrap.indent(frame.strip(), lightblack('\u2502 ')) for frame in formatted_exception[:-1]),
-                lightblack('\u2514') + lightblack_bg(lightwhite(' ' + excinfo[0].__name__ + ' ')) + ' ' +
-                lightwhite(textwrap.indent(str(excinfo[1]), ' ' * (len(excinfo[0].__name__) + 4)).strip())
-            ]
-        )
+        output = []
+        stack_length = len(formatted_exception)
+        for i, frame in enumerate(formatted_exception):
+            if frame.startswith('  '):
+                output.append(textwrap.indent('  ' + frame.strip(), lightblack('\u2502 ')))
+            else:
+                g = re.match('([a-zA-Z.]+): (.*)$', frame.strip(), flags=re.DOTALL)
+                if g is not None:
+                    etyp, emsg = g.group(1), g.group(2)
+                    output.append(lightblack('\u2514' if i + 1 == stack_length else '\u251c') + lightblack_bg(
+                        lightwhite(' ' + etyp + ' ')) + ' ' + lightwhite(
+                        textwrap.indent(str(emsg), ' ' * (len(etyp) + 4)).strip()))
+                else:
+                    output.append(textwrap.indent(frame.strip(), lightblack('\u2502 ')))
+
+        return EOL.join(output)
