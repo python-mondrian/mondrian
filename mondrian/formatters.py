@@ -4,7 +4,6 @@ import textwrap
 from traceback import format_exception
 
 from colorama import Style
-
 from mondrian.term import iswindows, lightblack, CLEAR_EOL, lightblack_bg, lightwhite
 
 EOL = '\n' if iswindows else (Style.RESET_ALL + CLEAR_EOL + '\n')
@@ -39,9 +38,11 @@ class Formatter(logging.Formatter):
                 g = re.match('([a-zA-Z.]+): (.*)$', frame.strip(), flags=re.DOTALL)
                 if g is not None:
                     etyp, emsg = g.group(1), g.group(2)
-                    output.append(lightblack('\u2514' if i + 1 == stack_length else '\u251c') + lightblack_bg(
-                        lightwhite(' ' + etyp + ' ')) + ' ' + lightwhite(
-                        textwrap.indent(str(emsg), ' ' * (len(etyp) + 4)).strip()))
+                    output.append(
+                        lightblack('\u2514' if i + 1 == stack_length else '\u251c') +
+                        lightblack_bg(lightwhite(' ' + etyp + ' ')) + ' ' +
+                        lightwhite(textwrap.indent(str(emsg), ' ' * (len(etyp) + 4)).strip())
+                    )
                 else:
                     output.append(textwrap.indent(frame.strip(), lightblack('\u2502 ')))
 

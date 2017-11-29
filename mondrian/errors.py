@@ -1,11 +1,5 @@
 import logging
 import threading
-from textwrap import indent
-from traceback import format_exception
-
-from colorama import Style, Fore
-
-from mondrian.formatters import EOL
 
 
 def _get_error_message(exc):

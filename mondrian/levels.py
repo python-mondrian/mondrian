@@ -1,6 +1,6 @@
 import logging
 
-from colorama import Fore, Back
+from colorama import Fore
 
 DEBUG = 'DEBG'
 INFO = 'INFO'

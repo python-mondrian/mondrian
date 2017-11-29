@@ -6,7 +6,21 @@ import subprocess
 import sys
 
 iswindows = (sys.platform == 'win32')
-istty = sys.stdout.isatty()
+
+
+def _is_interactive_console():
+    return sys.stdout.isatty()
+
+
+def _is_jupyter_notebook():
+    try:
+        return get_ipython().__class__.__name__ == 'ZMQInteractiveShell'
+    except NameError:
+        return False
+
+
+istty = _is_interactive_console()
+isjupyter = _is_jupyter_notebook()
 
 
 def _create_color_wrappers(symbol):
@@ -85,9 +99,8 @@ def _get_size_windows():
         csbi = create_string_buffer(22)
         res = windll.kernel32.GetConsoleScreenBufferInfo(h, csbi)
         if res:
-            (bufx, bufy, curx, cury, wattr,
-             left, top, right, bottom,
-             maxx, maxy) = struct.unpack("hhhhHhhhhhh", csbi.raw)
+            (bufx, bufy, curx, cury, wattr, left, top, right, bottom, maxx,
+             maxy) = struct.unpack("hhhhHhhhhhh", csbi.raw)
             sizex = right - left + 1
             sizey = bottom - top + 1
             return sizex, sizey
