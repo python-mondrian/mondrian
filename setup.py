@@ -41,8 +41,8 @@ else:
     version = version_ns.get('__version__', 'dev')
 
 setup(
-    author='',
-    author_email='',
+    author='Romain Dorgueil',
+    author_email='romain@dorgueil.net',
     description='Logging with pretty coloured squares all over the place.',
     license='Apache License, Version 2.0',
     name='mondrian',
@@ -51,13 +51,13 @@ setup(
     classifiers=classifiers,
     packages=find_packages(exclude=['ez_setup', 'example', 'test']),
     include_package_data=True,
-    install_requires=['colorama (>= 0.3, < 0.4)'],
+    install_requires=['colorama (~= 0.3.9)'],
     extras_require={
         'dev': [
             'coverage (>= 4.4, < 5.0)', 'pytest (>= 3.1, < 4.0)', 'pytest-cov (>= 2.5, < 3.0)',
             'sphinx (>= 1.6, < 2.0)', 'yapf'
         ]
     },
-    url='',
+    url='https://github.com/hartym/mondrian',
     download_url=''.format(version=version),
 )

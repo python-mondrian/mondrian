@@ -13,12 +13,12 @@ python.setup(
     name='mondrian',
     description='Logging with pretty coloured squares all over the place.',
     license='Apache License, Version 2.0',
-    url='',
+    url='https://github.com/hartym/mondrian',
     download_url='',
-    author='',
-    author_email='',
+    author='Romain Dorgueil',
+    author_email='romain@dorgueil.net',
 )
 
-python.add_requirements('colorama >=0.3,<0.4', )
+python.add_requirements('colorama ~=0.3.9')
 
 # vim: ft=python:
