@@ -1,7 +1,9 @@
-[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fhartym%2Fmondrian.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2Fhartym%2Fmondrian?ref=badge_shield)
-
 mondrian
 ========
+
+.. image:: https://app.fossa.io/api/projects/git%2Bgithub.com%2Fpython-mondrian%2Fmondrian.svg?type=shield
+    :target: https://app.fossa.io/projects/git%2Bgithub.com%2Fpython-mondrian%2Fmondrian?ref=badge_shield
+    :alt: License Status
 
 Mondrian helps you paint your standard python logger.
 
@@ -26,6 +28,10 @@ Enabling mondrian is simple and straightforward:
         logger.info('Hello, world.')
 
 
+License
+=======
 
-## License
-[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fhartym%2Fmondrian.svg?type=large)](https://app.fossa.io/projects/git%2Bgithub.com%2Fhartym%2Fmondrian?ref=badge_large)
+.. image:: https://app.fossa.io/api/projects/git%2Bgithub.com%2Fpython-mondrian%2Fmondrian.svg?type=large
+    :target: https://app.fossa.io/projects/git%2Bgithub.com%2Fpython-mondrian%2Fmondrian?ref=badge_large
+    :alt: License Status
+
