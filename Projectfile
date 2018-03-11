@@ -13,8 +13,8 @@ python.setup(
     name='mondrian',
     description='Logging with pretty coloured squares all over the place.',
     license='Apache License, Version 2.0',
-    url='https://github.com/hartym/mondrian',
-    download_url='',
+    url='https://python-mondrian.github.io/',
+    download_url='https://github.com/python-mondrian/mondrian/archive/{version}.tar.gz',
     author='Romain Dorgueil',
     author_email='romain@dorgueil.net',
 )
