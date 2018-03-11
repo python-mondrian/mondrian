@@ -15,6 +15,11 @@ Enabling mondrian is simple and straightforward:
     import logging
     import mondrian
 
-    logger = mondrian.getLogger()
-    logger.setLevel(logging.INFO)
+    logger = logging.getLogger()
+
+    if __name__ == '__main__':
+        mondrian.setup(excepthook=True)
+        logger.setLevel(logging.INFO)
+
+        logger.info('Hello, world.')
 
