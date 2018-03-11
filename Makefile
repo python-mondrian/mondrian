@@ -25,12 +25,14 @@ YAPF_OPTIONS ?= -rip
 
 install:   ## Installs the local project dependencies.
 	if [ -z "$(QUICK)" ]; then \
-	    $(PIP) install $(PIP_INSTALL_OPTIONS) -U pip wheel$(PIP) install $(PIP_INSTALL_OPTIONS) -U -r $(PYTHON_REQUIREMENTS_FILE) ; \
+	    $(PIP) install $(PIP_INSTALL_OPTIONS) -U pip wheel ; \
+	    $(PIP) install $(PIP_INSTALL_OPTIONS) -U -r $(PYTHON_REQUIREMENTS_FILE) ; \
 	fi
 
 install-dev:   ## Installs the local project dependencies, including development-only libraries.
 	if [ -z "$(QUICK)" ]; then \
-	    $(PIP) install $(PIP_INSTALL_OPTIONS) -U pip wheel$(PIP) install $(PIP_INSTALL_OPTIONS) -U -r $(PYTHON_REQUIREMENTS_DEV_FILE) ; \
+	    $(PIP) install $(PIP_INSTALL_OPTIONS) -U pip wheel ; \
+	    $(PIP) install $(PIP_INSTALL_OPTIONS) -U -r $(PYTHON_REQUIREMENTS_DEV_FILE) ; \
 	fi
 
 clean:   ## Cleans up the local mess.
