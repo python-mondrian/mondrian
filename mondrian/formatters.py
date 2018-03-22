@@ -35,7 +35,8 @@ class Formatter(logging.Formatter):
             if frame.startswith('  '):
                 output.append(textwrap.indent('  ' + frame.strip(), lightblack('\u2502 ')))
             else:
-                g = re.match('([a-zA-Z.]+): (.*)$', frame.strip(), flags=re.DOTALL)
+                # XXX TODO change this to use valid python package regexp (plus dot).
+                g = re.match('([a-zA-Z_.]+): (.*)$', frame.strip(), flags=re.DOTALL)
                 if g is not None:
                     etyp, emsg = g.group(1), g.group(2)
                     output.append(
