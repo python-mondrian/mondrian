@@ -21,6 +21,7 @@ python.setup(
 
 python.add_requirements('colorama ~=0.3.7')
 
+
 # Pipelines
 @listen(make.on_generate)
 def on_make_generate_pipelines(event):
@@ -34,5 +35,6 @@ def on_make_generate_pipelines(event):
         phony=True,
         doc='Releases mondrian.'
     )
+
 
 # vim: ft=python:

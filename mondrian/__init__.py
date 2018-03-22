@@ -16,7 +16,6 @@ __all__ = [
     'term',
 ]
 
-
 # Patch standard output/error if it's not supporting unicode
 # See: https://stackoverflow.com/questions/27347772/print-unicode-string-in-python-regardless-of-environment
 if sys.stdout.encoding is None or sys.stdout.encoding == 'ANSI_X3.4-1968':
