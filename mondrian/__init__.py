@@ -34,7 +34,7 @@ def setup_excepthook():
 is_setup = False
 
 
-def setup(*, colors=(not term.iswindows), excepthook=False):
+def setup(*, colors=(not term.iswindows and term.istty), excepthook=False, formatter=None):
     """
     Setup mondrian log handlers.
 
@@ -44,12 +44,16 @@ def setup(*, colors=(not term.iswindows), excepthook=False):
     global is_setup
 
     if not is_setup:
-        for level, name in levels.NAMES.items():
-            logging.addLevelName(level, name)
-
         handler = logging.StreamHandler(sys.stderr)
-        handler.setFormatter(formatters.Formatter())
-        handler.addFilter(filters.ColorFilter() if colors else filters.Filter())
+
+        if formatter:
+            handler.setFormatter(formatter)
+        else:
+            for level, name in levels.NAMES.items():
+                logging.addLevelName(level, name)
+
+            handler.setFormatter(formatters.Formatter())
+            handler.addFilter(filters.ColorFilter() if colors else filters.Filter())
 
         logging.getLogger().addHandler(handler)
         logging.captureWarnings(True)
