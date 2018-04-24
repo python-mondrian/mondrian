@@ -68,13 +68,13 @@ lightmagenta, lightmagenta_bg = _create_color_wrappers('LIGHTMAGENTA_EX')
 lightcyan, lightcyan_bg = _create_color_wrappers('LIGHTCYAN_EX')
 lightwhite, lightwhite_bg = _create_color_wrappers('LIGHTWHITE_EX')
 
-
-def bold(*args):
-    if usecolors:
+if usecolors:
+    def bold(*args):
         from colorama import Style
         return ''.join((Style.BRIGHT, *args, Style.NORMAL))
-    return ''.join(args)
-
+else:
+    def bold(*args):
+        return ''.join(args)
 
 CLEAR_EOL = '\033[0K'
 
