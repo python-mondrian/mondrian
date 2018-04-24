@@ -51,9 +51,9 @@ def setup(*, colors=(not term.iswindows and term.istty), excepthook=False, forma
         else:
             for level, name in levels.NAMES.items():
                 logging.addLevelName(level, name)
-
             handler.setFormatter(formatters.Formatter())
-            handler.addFilter(filters.ColorFilter() if colors else filters.Filter())
+
+        handler.addFilter(filters.ColorFilter() if colors else filters.Filter())
 
         logging.getLogger().addHandler(handler)
         logging.captureWarnings(True)
