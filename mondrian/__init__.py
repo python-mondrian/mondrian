@@ -34,7 +34,7 @@ def setup_excepthook():
 is_setup = False
 
 
-def setup(*, colors=(not term.iswindows and term.istty), excepthook=False, formatter=None):
+def setup(*, colors=term.usecolors, excepthook=False, formatter=None):
     """
     Setup mondrian log handlers.
 
