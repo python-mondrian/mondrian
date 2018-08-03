@@ -22,9 +22,20 @@ def _is_jupyter_notebook():
 istty = _is_interactive_console()
 isjupyter = _is_jupyter_notebook()
 
+usecolors = istty and not iswindows
+
+_colors = os.environ.get('COLORS')
+if _colors:
+    _colors = _colors.lower()
+    if _colors in ('y', 'yes', 't', 'true', 'on', '1'):
+        usecolors = True
+    elif _colors in ('n', 'no', 'f', 'false', 'off', '0'):
+        usecolors = False
+del _colors
+
 
 def _create_color_wrappers(symbol):
-    if istty:
+    if usecolors:
         from colorama import Fore, Back
         fg, bg, rfg, rbg = getattr(Fore, symbol), getattr(Back, symbol), Fore.RESET, Back.RESET
     else:
@@ -57,13 +68,13 @@ lightmagenta, lightmagenta_bg = _create_color_wrappers('LIGHTMAGENTA_EX')
 lightcyan, lightcyan_bg = _create_color_wrappers('LIGHTCYAN_EX')
 lightwhite, lightwhite_bg = _create_color_wrappers('LIGHTWHITE_EX')
 
-
-def bold(*args):
-    if istty:
+if usecolors:
+    def bold(*args):
         from colorama import Style
         return ''.join((Style.BRIGHT, *args, Style.NORMAL))
-    return ''.join(args)
-
+else:
+    def bold(*args):
+        return ''.join(args)
 
 CLEAR_EOL = '\033[0K'
 
