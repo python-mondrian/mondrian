@@ -2,12 +2,12 @@ import codecs
 import logging
 import sys
 
-from mondrian import errors, filters, formatters, levels, term, contextmanagers, settings
+from mondrian import errors, filters, formatters, levels, term, humanizer, settings
 from mondrian._version import __version__
 
 __all__ = [
     "__version__",
-    "contextmanagers",
+    "humanizer",
     "errors",
     "filters",
     "formatters",

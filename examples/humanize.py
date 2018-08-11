@@ -12,5 +12,7 @@ def this_is_a_very_long_call_that_is_meant_to_break_everything_but_it_really_nee
 if __name__ == "__main__":
     mondrian.setup(excepthook=True)
 
-    with mondrian.contextmanagers.humanize():
+    with mondrian.humanizer.humanize():
         main()
+
+    print(mondrian.humanizer.Success('Hello, world.'))
