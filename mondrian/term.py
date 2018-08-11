@@ -5,7 +5,7 @@ import struct
 import subprocess
 import sys
 
-iswindows = (sys.platform == 'win32')
+iswindows = sys.platform == "win32"
 
 
 def _is_interactive_console():
@@ -14,7 +14,7 @@ def _is_interactive_console():
 
 def _is_jupyter_notebook():
     try:
-        return get_ipython().__class__.__name__ == 'ZMQInteractiveShell'
+        return get_ipython().__class__.__name__ == "ZMQInteractiveShell"
     except NameError:
         return False
 
@@ -24,12 +24,12 @@ isjupyter = _is_jupyter_notebook()
 
 usecolors = istty and not iswindows
 
-_colors = os.environ.get('COLORS')
+_colors = os.environ.get("COLORS")
 if _colors:
     _colors = _colors.lower()
-    if _colors in ('y', 'yes', 't', 'true', 'on', '1'):
+    if _colors in ("y", "yes", "t", "true", "on", "1"):
         usecolors = True
-    elif _colors in ('n', 'no', 'f', 'false', 'off', '0'):
+    elif _colors in ("n", "no", "f", "false", "off", "0"):
         usecolors = False
 del _colors
 
@@ -37,46 +37,53 @@ del _colors
 def _create_color_wrappers(symbol):
     if usecolors:
         from colorama import Fore, Back
+
         fg, bg, rfg, rbg = getattr(Fore, symbol), getattr(Back, symbol), Fore.RESET, Back.RESET
     else:
-        fg, bg, rfg, rbg = '', '', '', ''
+        fg, bg, rfg, rbg = "", "", "", ""
 
     def fg_wrapper(*args):
-        return ''.join((fg, *args, rfg))
+        return "".join((fg, *args, rfg))
 
     def bg_wrapper(*args):
-        return ''.join((bg, *args, rbg))
+        return "".join((bg, *args, rbg))
 
     return fg_wrapper, bg_wrapper
 
 
-black, black_bg = _create_color_wrappers('BLACK')
-red, red_bg = _create_color_wrappers('RED')
-green, green_bg = _create_color_wrappers('GREEN')
-yellow, yellow_bg = _create_color_wrappers('YELLOW')
-blue, blue_bg = _create_color_wrappers('BLUE')
-magenta, magenta_bg = _create_color_wrappers('MAGENTA')
-cyan, cyan_bg = _create_color_wrappers('CYAN')
-white, white_bg = _create_color_wrappers('WHITE')
-reset, reset_bg = _create_color_wrappers('RESET')
-lightblack, lightblack_bg = _create_color_wrappers('LIGHTBLACK_EX')
-lightred, lightred_bg = _create_color_wrappers('LIGHTRED_EX')
-lightgreen, lightgreen_bg = _create_color_wrappers('LIGHTGREEN_EX')
-lightyellow, lightyellow_bg = _create_color_wrappers('LIGHTYELLOW_EX')
-lightblue, lightblue_bg = _create_color_wrappers('LIGHTBLUE_EX')
-lightmagenta, lightmagenta_bg = _create_color_wrappers('LIGHTMAGENTA_EX')
-lightcyan, lightcyan_bg = _create_color_wrappers('LIGHTCYAN_EX')
-lightwhite, lightwhite_bg = _create_color_wrappers('LIGHTWHITE_EX')
+black, black_bg = _create_color_wrappers("BLACK")
+red, red_bg = _create_color_wrappers("RED")
+green, green_bg = _create_color_wrappers("GREEN")
+yellow, yellow_bg = _create_color_wrappers("YELLOW")
+blue, blue_bg = _create_color_wrappers("BLUE")
+magenta, magenta_bg = _create_color_wrappers("MAGENTA")
+cyan, cyan_bg = _create_color_wrappers("CYAN")
+white, white_bg = _create_color_wrappers("WHITE")
+reset, reset_bg = _create_color_wrappers("RESET")
+lightblack, lightblack_bg = _create_color_wrappers("LIGHTBLACK_EX")
+lightred, lightred_bg = _create_color_wrappers("LIGHTRED_EX")
+lightgreen, lightgreen_bg = _create_color_wrappers("LIGHTGREEN_EX")
+lightyellow, lightyellow_bg = _create_color_wrappers("LIGHTYELLOW_EX")
+lightblue, lightblue_bg = _create_color_wrappers("LIGHTBLUE_EX")
+lightmagenta, lightmagenta_bg = _create_color_wrappers("LIGHTMAGENTA_EX")
+lightcyan, lightcyan_bg = _create_color_wrappers("LIGHTCYAN_EX")
+lightwhite, lightwhite_bg = _create_color_wrappers("LIGHTWHITE_EX")
 
 if usecolors:
+
     def bold(*args):
         from colorama import Style
-        return ''.join((Style.BRIGHT, *args, Style.NORMAL))
-else:
-    def bold(*args):
-        return ''.join(args)
 
-CLEAR_EOL = '\033[0K'
+        return "".join((Style.BRIGHT, *args, Style.NORMAL))
+
+
+else:
+
+    def bold(*args):
+        return "".join(args)
+
+
+CLEAR_EOL = "\033[0K"
 
 
 def get_size():
@@ -88,12 +95,12 @@ def get_size():
     """
     current_os = platform.system()
     tuple_xy = None
-    if current_os == 'Windows':
+    if current_os == "Windows":
         tuple_xy = _get_size_windows()
         if tuple_xy is None:
             tuple_xy = _get_size_tput()
             # needed for window's python in cygwin's xterm!
-    if current_os in ['Linux', 'Darwin'] or current_os.startswith('CYGWIN'):
+    if current_os in ["Linux", "Darwin"] or current_os.startswith("CYGWIN"):
         tuple_xy = _get_size_linux()
     if tuple_xy is None:
         tuple_xy = (80, 25)  # default value
@@ -103,6 +110,7 @@ def get_size():
 def _get_size_windows():
     try:
         from ctypes import windll, create_string_buffer
+
         # stdin handle is -10
         # stdout handle is -11
         # stderr handle is -12
@@ -110,8 +118,9 @@ def _get_size_windows():
         csbi = create_string_buffer(22)
         res = windll.kernel32.GetConsoleScreenBufferInfo(h, csbi)
         if res:
-            (bufx, bufy, curx, cury, wattr, left, top, right, bottom, maxx,
-             maxy) = struct.unpack("hhhhHhhhhhh", csbi.raw)
+            (bufx, bufy, curx, cury, wattr, left, top, right, bottom, maxx, maxy) = struct.unpack(
+                "hhhhHhhhhhh", csbi.raw
+            )
             sizex = right - left + 1
             sizey = bottom - top + 1
             return sizex, sizey
@@ -123,8 +132,8 @@ def _get_size_tput():
     # get terminal width
     # src: http://stackoverflow.com/questions/263890/how-do-i-find-the-width-height-of-a-terminal-window
     try:
-        cols = int(subprocess.check_call(shlex.split('tput cols')))
-        rows = int(subprocess.check_call(shlex.split('tput lines')))
+        cols = int(subprocess.check_call(shlex.split("tput cols")))
+        rows = int(subprocess.check_call(shlex.split("tput lines")))
         return (cols, rows)
     except:
         pass
@@ -135,7 +144,8 @@ def _get_size_linux():
         try:
             import fcntl
             import termios
-            cr = struct.unpack('hh', fcntl.ioctl(fd, termios.TIOCGWINSZ, '1234'))
+
+            cr = struct.unpack("hh", fcntl.ioctl(fd, termios.TIOCGWINSZ, "1234"))
             return cr
         except:
             pass
@@ -150,7 +160,7 @@ def _get_size_linux():
             pass
     if not cr:
         try:
-            cr = (os.environ['LINES'], os.environ['COLUMNS'])
+            cr = (os.environ["LINES"], os.environ["COLUMNS"])
         except:
             return None
     return int(cr[1]), int(cr[0])

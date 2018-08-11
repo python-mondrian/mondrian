@@ -1,17 +1,16 @@
 # mondrian (see github.com/python-medikit)
 
-from medikit import require
+from medikit import listen, require
 
 git = require('git')
 make = require('make')
 pytest = require('pytest')
 python = require('python')
 sphinx = require('sphinx')
-yapf = require('yapf')
 
 python.setup(
     name='mondrian',
-    description='Logging with pretty coloured squares all over the place.',
+    description='Mondrian helps you to configure and use python\'s logging module once and for ever.',
     license='Apache License, Version 2.0',
     url='https://python-mondrian.github.io/',
     download_url='https://github.com/python-mondrian/mondrian/archive/{version}.tar.gz',
@@ -22,6 +21,20 @@ python.setup(
 python.add_requirements('colorama ~=0.3.7')
 
 
+# Formating
+@listen(make.on_generate)
+def on_make_generate_format(event):
+    event.makefile.add_target(
+        'format',
+        '''
+            black -l 120 .
+            isort -rc -y .
+        ''',
+        phony=True,
+        doc='Reformats the whole codebase using our standards (requires black and isort).'
+    )
+
+
 # Pipelines
 @listen(make.on_generate)
 def on_make_generate_pipelines(event):
@@ -29,10 +42,9 @@ def on_make_generate_pipelines(event):
     event.makefile.add_target(
         'release',
         '$(MEDIKIT) pipeline release start',
-        deps=('medikit', ),
+        deps=('medikit',),
         phony=True,
         doc='Runs the "release" pipeline.'
     )
-
 
 # vim: ft=python:

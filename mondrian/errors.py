@@ -3,10 +3,10 @@ import threading
 
 
 def _get_error_message(exc):
-    if hasattr(exc, '__str__'):
+    if hasattr(exc, "__str__"):
         message = str(exc)
         return message[0].upper() + message[1:]
-    return '\n'.join(exc.args),
+    return ("\n".join(exc.args),)
 
 
 def excepthook(exctype, exc, traceback, level=logging.CRITICAL, logger=None, context=None):
@@ -22,6 +22,6 @@ def excepthook(exctype, exc, traceback, level=logging.CRITICAL, logger=None, con
     context = context or "thread {}".format(threading.get_ident())
     return (logger or logging.getLogger()).log(
         level,
-        'Uncaught exception{}.'.format(' (in {})'.format(context) if context else ''),
-        exc_info=(exctype, exc, traceback)
+        "Uncaught exception{}.".format(" (in {})".format(context) if context else ""),
+        exc_info=(exctype, exc, traceback),
     )

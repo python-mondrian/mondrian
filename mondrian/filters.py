@@ -7,7 +7,7 @@ from mondrian import levels
 
 class Filter(logging.Filter):
     def filter(self, record):
-        record.color = ''
+        record.color = ""
         record.spent = record.relativeCreated // 1000
         return True
 

@@ -2,11 +2,11 @@ import logging
 
 from colorama import Fore
 
-DEBUG = 'DEBG'
-INFO = 'INFO'
-WARNING = 'WARN'
-ERROR = 'ERR.'
-CRITICAL = 'CRIT'
+DEBUG = "DEBG"
+INFO = "INFO"
+WARNING = "WARN"
+ERROR = "ERR."
+CRITICAL = "CRIT"
 
 COLORS = {
     DEBUG: Fore.LIGHTCYAN_EX,

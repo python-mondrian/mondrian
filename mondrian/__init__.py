@@ -5,22 +5,13 @@ import sys
 from mondrian import errors, filters, formatters, levels, term
 from mondrian._version import __version__
 
-__all__ = [
-    '__version__',
-    'errors',
-    'filters',
-    'formatters',
-    'levels',
-    'setup',
-    'setup_excepthook',
-    'term',
-]
+__all__ = ["__version__", "errors", "filters", "formatters", "levels", "setup", "setup_excepthook", "term"]
 
 # Patch standard output/error if it's not supporting unicode
 # See: https://stackoverflow.com/questions/27347772/print-unicode-string-in-python-regardless-of-environment
-if sys.stdout.encoding is None or sys.stdout.encoding == 'ANSI_X3.4-1968':
-    sys.stdout = codecs.getwriter('UTF-8')(sys.stdout.buffer, errors='replace')
-    sys.stderr = codecs.getwriter('UTF-8')(sys.stderr.buffer, errors='replace')
+if sys.stdout.encoding is None or sys.stdout.encoding == "ANSI_X3.4-1968":
+    sys.stdout = codecs.getwriter("UTF-8")(sys.stdout.buffer, errors="replace")
+    sys.stderr = codecs.getwriter("UTF-8")(sys.stderr.buffer, errors="replace")
 
 
 def setup_excepthook():
@@ -32,6 +23,7 @@ def setup_excepthook():
 
 
 is_setup = False
+
 
 def setup(*, colors=term.usecolors, excepthook=False, formatter=None):
     """
