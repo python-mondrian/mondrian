@@ -1,0 +1,8 @@
+
+# TOP_LEFT, TOP_RIGHT = '╔╗'
+# VERT, HORIZ = '║', '═'
+# BOTTOM_LEFT, BOTTOM_RIGHT = '╚╝'
+
+TOP_LEFT, TOP_RIGHT = "╭╮"
+VERT, VERT_LEFT, HORIZ = "│", "\u251c", "─"
+BOTTOM_LEFT, BOTTOM_RIGHT = "╰╯"

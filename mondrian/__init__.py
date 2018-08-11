@@ -2,10 +2,21 @@ import codecs
 import logging
 import sys
 
-from mondrian import errors, filters, formatters, levels, term
+from mondrian import errors, filters, formatters, levels, term, contextmanagers, settings
 from mondrian._version import __version__
 
-__all__ = ["__version__", "errors", "filters", "formatters", "levels", "setup", "setup_excepthook", "term"]
+__all__ = [
+    "__version__",
+    "contextmanagers",
+    "errors",
+    "filters",
+    "formatters",
+    "levels",
+    "settings",
+    "setup",
+    "setup_excepthook",
+    "term",
+]
 
 # Patch standard output/error if it's not supporting unicode
 # See: https://stackoverflow.com/questions/27347772/print-unicode-string-in-python-regardless-of-environment
@@ -25,7 +36,7 @@ def setup_excepthook():
 is_setup = False
 
 
-def setup(*, colors=term.usecolors, excepthook=False, formatter=None):
+def setup(*, level=None, colors=term.usecolors, excepthook=False, formatter=None):
     """
     Setup mondrian log handlers.
 
@@ -34,24 +45,32 @@ def setup(*, colors=term.usecolors, excepthook=False, formatter=None):
     """
     global is_setup
 
+    logger = logging.getLogger()
+
     if not is_setup:
         handler = logging.StreamHandler(sys.stderr)
 
         if formatter:
             handler.setFormatter(formatter)
         else:
-            for level, name in levels.NAMES.items():
-                logging.addLevelName(level, name)
+            for _level, _name in levels.NAMES.items():
+                logging.addLevelName(_level, _name)
             handler.setFormatter(formatters.Formatter())
 
         handler.addFilter(filters.ColorFilter() if colors else filters.Filter())
-        logging.getLogger().addHandler(handler)
+        logger.addHandler(handler)
         logging.captureWarnings(True)
 
         is_setup = True
 
     if excepthook:
         setup_excepthook()
+
+    if level is None:
+        # set default based on env
+        logger.setLevel(logging.DEBUG if settings.DEBUG else logging.INFO)
+    elif level is not False:
+        logger.setLevel(level)
 
 
 def getLogger(*args, colors=(not term.iswindows), excepthook=False, **kwargs):

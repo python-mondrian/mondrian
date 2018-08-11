@@ -5,6 +5,8 @@ import struct
 import subprocess
 import sys
 
+from mondrian import settings
+
 iswindows = sys.platform == "win32"
 
 
@@ -24,14 +26,8 @@ isjupyter = _is_jupyter_notebook()
 
 usecolors = istty and not iswindows
 
-_colors = os.environ.get("COLORS")
-if _colors:
-    _colors = _colors.lower()
-    if _colors in ("y", "yes", "t", "true", "on", "1"):
-        usecolors = True
-    elif _colors in ("n", "no", "f", "false", "off", "0"):
-        usecolors = False
-del _colors
+if settings.COLORS is not None:
+    usecolors = settings.COLORS
 
 
 def _create_color_wrappers(symbol):
