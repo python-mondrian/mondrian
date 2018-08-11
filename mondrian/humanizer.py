@@ -1,3 +1,4 @@
+import itertools
 import re
 import sys
 from contextlib import contextmanager
@@ -10,7 +11,7 @@ from mondrian.styles import BOTTOM_LEFT, BOTTOM_RIGHT, HORIZ, TOP_LEFT, TOP_RIGH
 preformatted_pattern = re.compile("([^`]*)`([^`]*)`([^`]*)")
 
 
-def humanized(exc, *, fg=term.red, bg=lambda *args: term.red_bg(term.bold(*args))):
+def humanized(exc, *, fg=term.red, bg=lambda *args: term.red_bg(term.bold(*args)), help_url=None):
     SPACES = 2
     prefix, suffix = fg(VERT + " " * (SPACES - 1)), fg(" " * (SPACES - 1) + VERT)
     result = []
@@ -31,7 +32,11 @@ def humanized(exc, *, fg=term.red, bg=lambda *args: term.red_bg(term.bold(*args)
 
     result.append(joined(fg(TOP_LEFT + HORIZ * (line_length - 2) + TOP_RIGHT)))
 
-    for i, arg in enumerate(exc.args):
+    args = list(exc.args)
+    if help_url:
+        args += ['', 'Read more: {}'.format(help_url)]
+
+    for i, arg in enumerate(args):
 
         if i == 1:
             result.append(joined(prefix, " " * (line_length - 2 * SPACES), suffix))
@@ -72,11 +77,12 @@ def humanized(exc, *, fg=term.red, bg=lambda *args: term.red_bg(term.bold(*args)
 
 
 class Success():
-    def __init__(self, *args):
+    def __init__(self, *args, help_url=None):
         self.args = args
+        self.help_url = help_url
 
     def __str__(self):
-        return humanized(self, fg=term.green, bg=lambda *args: term.lightgreen_bg(term.lightblack(*args)))
+        return humanized(self, fg=term.green, bg=(lambda *args: term.lightgreen_bg(term.lightblack(*args))), help_url=self.help_url)
 
 
 @contextmanager

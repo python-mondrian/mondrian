@@ -5,6 +5,8 @@ import struct
 import subprocess
 import sys
 
+from colorama.ansi import code_to_chars
+
 from mondrian import settings
 
 iswindows = sys.platform == "win32"
@@ -72,10 +74,16 @@ if usecolors:
 
         return "".join((Style.BRIGHT, *args, Style.NORMAL))
 
+    def underline(*args):
+        from colorama import Style
+
+        return "".join((code_to_chars(4), *args, code_to_chars(0)))
+
 
 else:
-
     def bold(*args):
+        return "".join(args)
+    def underline(*args):
         return "".join(args)
 
 
