@@ -5,7 +5,7 @@ from traceback import format_exception as _format_exception
 
 from colorama import Style
 
-from mondrian import settings
+from mondrian import settings, styles
 from mondrian.term import CLEAR_EOL, iswindows, lightblack, lightblack_bg, lightwhite
 
 if iswindows or not settings.COLORS:
@@ -38,7 +38,7 @@ def format_exception(excinfo, *, prefix="", fg=lightblack, bg=lightblack_bg, sum
                 if g is not None:
                     etyp, emsg = g.group(1), g.group(2)
                     output.append(
-                        fg("\u2514" if _last else "\u251c")
+                        fg(styles.BOTTOM_LEFT if _last else styles.VERT_LEFT)
                         + bg(lightwhite(" " + etyp + " "))
                         + " "
                         + lightwhite(textwrap.indent(str(emsg), " " * (len(etyp) + 4)).strip())
