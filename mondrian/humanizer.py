@@ -33,8 +33,6 @@ def humanized(exc, *, fg=term.red, bg=lambda *args: term.red_bg(term.bold(*args)
     result.append(joined(fg(TOP_LEFT + HORIZ * (line_length - 2) + TOP_RIGHT)))
 
     args = list(exc.args)
-    if help_url:
-        args += ['', 'Read more: {}'.format(help_url)]
 
     for i, arg in enumerate(args):
 
@@ -57,6 +55,14 @@ def humanized(exc, *, fg=term.red, bg=lambda *args: term.red_bg(term.bold(*args)
         else:
             # other lines
             result.append(joined(prefix, arg_formatted + " " * (line_length - arg_length - 2 * SPACES), suffix))
+
+    if help_url:
+        help_prefix = 'Read more: '
+        arg_length = len(help_url) + len(help_prefix)
+        arg_formatted = help_prefix + term.underline(term.lightblue(help_url))
+        result.append(joined(prefix, " " * (line_length - 2 * SPACES)  , suffix))
+        result.append(joined(prefix, arg_formatted+" " * (line_length - arg_length - 2 * SPACES)  , suffix))
+
 
     more = settings.DEBUG
     exc_lines = format_exception(exc_info(), fg=fg, bg=bg, summary=False).splitlines()
