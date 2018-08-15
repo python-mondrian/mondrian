@@ -60,9 +60,8 @@ def humanized(exc, *, fg=term.red, bg=lambda *args: term.red_bg(term.bold(*args)
         help_prefix = 'Read more: '
         arg_length = len(help_url) + len(help_prefix)
         arg_formatted = help_prefix + term.underline(term.lightblue(help_url))
-        result.append(joined(prefix, " " * (line_length - 2 * SPACES)  , suffix))
-        result.append(joined(prefix, arg_formatted+" " * (line_length - arg_length - 2 * SPACES)  , suffix))
-
+        result.append(joined(prefix, " " * (line_length - 2 * SPACES), suffix))
+        result.append(joined(prefix, arg_formatted + " " * (line_length - arg_length - 2 * SPACES), suffix))
 
     more = settings.DEBUG
     exc_lines = format_exception(exc_info(), fg=fg, bg=bg, summary=False).splitlines()
@@ -78,6 +77,8 @@ def humanized(exc, *, fg=term.red, bg=lambda *args: term.red_bg(term.bold(*args)
         for _line in exc_lines:
             result.append(_line)
         result.append(joined(fg("╵")))
+    elif len(exc_lines):
+        result.append(term.lightblack('(add DEBUG=1 to system environment for stack trace)'.rjust(line_length)))
 
     return '\n'.join(result)
 
@@ -88,11 +89,29 @@ class Success():
         self.help_url = help_url
 
     def __str__(self):
-        return humanized(self, fg=term.green, bg=(lambda *args: term.lightgreen_bg(term.lightblack(*args))), help_url=self.help_url)
+        return humanized(self, fg=term.green, bg=(lambda *args: term.lightgreen_bg(term.lightblack(*args))),
+                         help_url=self.help_url)
 
 
 @contextmanager
 def humanize(*, types=(Exception,)):
+    """
+    Decorate a code block or a function to catch exceptions of `types` and displays it more gently to the user. One
+    can always add DEBUG=1 to the env to show the full stack trace.
+
+    Can be used both as a context manager:
+
+    >>> with humanize():
+    ...     ...
+
+    and as a decorator:
+
+    >>> @humanize()
+    ... def foo():
+    ...     ...
+
+    :param types: tuple of exception types to humanize
+    """
     if not isinstance(types, tuple):
         types = (types,)
 
@@ -100,3 +119,4 @@ def humanize(*, types=(Exception,)):
         yield
     except types as exc:
         print(humanized(exc), file=sys.stderr)
+        raise
