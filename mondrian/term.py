@@ -81,8 +81,10 @@ if usecolors:
 
 
 else:
+
     def bold(*args):
         return "".join(args)
+
     def underline(*args):
         return "".join(args)
 

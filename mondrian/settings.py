@@ -1,14 +1,18 @@
 import os
 
 
-def to_bool(s):
+def to_bool(s, *, strict=True):
     if s is None:
         return None
     if isinstance(s, bool):
         return s
     if isinstance(s, str) and len(s):
-        if s.lower() in ("f", "false", "n", "no", "0"):
-            return False
+        if strict:
+            if s.lower() in ("f", "false", "n", "no", "0"):
+                return False
+        else:
+            if s[0] in ("f", "n", "0"):
+                return False
         return True
     return False
 

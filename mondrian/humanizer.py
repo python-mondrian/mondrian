@@ -57,7 +57,7 @@ def humanized(exc, *, fg=term.red, bg=lambda *args: term.red_bg(term.bold(*args)
             result.append(joined(prefix, arg_formatted + " " * (line_length - arg_length - 2 * SPACES), suffix))
 
     if help_url:
-        help_prefix = 'Read more: '
+        help_prefix = "Read more: "
         arg_length = len(help_url) + len(help_prefix)
         arg_formatted = help_prefix + term.underline(term.lightblue(help_url))
         result.append(joined(prefix, " " * (line_length - 2 * SPACES), suffix))
@@ -69,28 +69,27 @@ def humanized(exc, *, fg=term.red, bg=lambda *args: term.red_bg(term.bold(*args)
     if not len(exc_lines):
         more = False
 
-    result.append(
-        joined(fg((VERT_LEFT if more else BOTTOM_LEFT) + HORIZ * (line_length - 2) + BOTTOM_RIGHT)),
-    )
+    result.append(joined(fg((VERT_LEFT if more else BOTTOM_LEFT) + HORIZ * (line_length - 2) + BOTTOM_RIGHT)))
 
     if more:
         for _line in exc_lines:
             result.append(_line)
         result.append(joined(fg("╵")))
     elif len(exc_lines):
-        result.append(term.lightblack('(add DEBUG=1 to system environment for stack trace)'.rjust(line_length)))
+        result.append(term.lightblack("(add DEBUG=1 to system environment for stack trace)".rjust(line_length)))
 
-    return '\n'.join(result)
+    return "\n".join(result)
 
 
-class Success():
+class Success:
     def __init__(self, *args, help_url=None):
         self.args = args
         self.help_url = help_url
 
     def __str__(self):
-        return humanized(self, fg=term.green, bg=(lambda *args: term.lightgreen_bg(term.lightblack(*args))),
-                         help_url=self.help_url)
+        return humanized(
+            self, fg=term.green, bg=(lambda *args: term.lightgreen_bg(term.lightblack(*args))), help_url=self.help_url
+        )
 
 
 @contextmanager

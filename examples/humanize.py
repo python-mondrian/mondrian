@@ -15,4 +15,4 @@ if __name__ == "__main__":
     with mondrian.humanizer.humanize():
         main()
 
-    print(mondrian.humanizer.Success('Hello, world.'))
+    print(mondrian.humanizer.Success("Hello, world."))
