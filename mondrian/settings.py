@@ -11,7 +11,7 @@ def to_bool(s, *, strict=True):
             if s.lower() in ("f", "false", "n", "no", "0"):
                 return False
         else:
-            if s[0] in ("f", "n", "0"):
+            if s[0].lower() in ("f", "n", "0"):
                 return False
         return True
     return False
