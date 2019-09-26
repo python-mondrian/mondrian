@@ -6,7 +6,6 @@ import subprocess
 import sys
 
 from colorama.ansi import code_to_chars
-
 from mondrian import settings
 
 iswindows = sys.platform == "win32"

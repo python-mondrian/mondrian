@@ -1,7 +1,6 @@
 import logging
 
 from colorama import Fore
-
 from mondrian import levels
 
 

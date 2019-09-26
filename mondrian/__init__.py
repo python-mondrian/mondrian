@@ -2,7 +2,7 @@ import codecs
 import logging
 import sys
 
-from mondrian import errors, filters, formatters, levels, term, humanizer, settings
+from mondrian import errors, filters, formatters, humanizer, levels, settings, term
 from mondrian._version import __version__
 
 __all__ = [
