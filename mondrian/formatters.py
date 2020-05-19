@@ -4,6 +4,7 @@ import textwrap
 from traceback import format_exception as _format_exception
 
 from colorama import Style
+
 from mondrian import settings, styles
 from mondrian.term import CLEAR_EOL, iswindows, lightblack, lightblack_bg, lightwhite
 
