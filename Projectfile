@@ -2,7 +2,6 @@
 
 from medikit import listen, require
 
-require("git")
 require("pytest")
 require("sphinx")
 require("format")
@@ -18,7 +17,7 @@ with require("python") as python:
         author_email="romain@dorgueil.net",
     )
 
-    python.add_requirements("colorama >=0.3.7,<0.5")
+    python.add_requirements("colorama >=0.3.7,<0.5", dev=["pre-commit ~=2.9.2"],)
 
 
 with require("make") as make:
