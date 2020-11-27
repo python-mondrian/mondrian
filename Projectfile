@@ -1,6 +1,7 @@
 # mondrian (see github.com/python-medikit)
 
-from medikit import listen, require
+from medikit import listen, require, pipeline
+from medikit.steps.exec import System
 
 require("pytest")
 require("sphinx")
@@ -32,6 +33,9 @@ with require("make") as make:
             phony=True,
             doc='Runs the "release" pipeline.',
         )
+
+with pipeline("release") as release:
+    release.add(System('pre-commit run || true'), before="System('git add -p .', True)")
 
 
 # vim: ft=python:
