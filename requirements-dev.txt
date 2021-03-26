@@ -30,7 +30,7 @@ pyparsing==2.4.7
 pytest-cov==2.10.1
 pytest==4.6.11
 pytz==2020.4
-pyyaml==5.3.1
+pyyaml==5.4
 requests==2.25.0
 six==1.15.0
 snowballstemmer==2.0.0
